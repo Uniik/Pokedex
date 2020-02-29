@@ -8,3 +8,12 @@ C:\Users\1769249\Documents\Pokedex\obj\Debug\Pokedex.csproj.GenerateResource.cac
 C:\Users\1769249\Documents\Pokedex\obj\Debug\Pokedex.csproj.CoreCompileInputs.cache
 C:\Users\1769249\Documents\Pokedex\obj\Debug\Pokedex.exe
 C:\Users\1769249\Documents\Pokedex\obj\Debug\Pokedex.pdb
+G:\apps\prog\github\c#\Pokedex\bin\Debug\Pokedex.exe.config
+G:\apps\prog\github\c#\Pokedex\bin\Debug\Pokedex.exe
+G:\apps\prog\github\c#\Pokedex\bin\Debug\Pokedex.pdb
+G:\apps\prog\github\c#\Pokedex\obj\Debug\Pokedex.csprojAssemblyReference.cache
+G:\apps\prog\github\c#\Pokedex\obj\Debug\Pokedex.frame.resources
+G:\apps\prog\github\c#\Pokedex\obj\Debug\Pokedex.Properties.Resources.resources
+G:\apps\prog\github\c#\Pokedex\obj\Debug\Pokedex.csproj.GenerateResource.cache
+G:\apps\prog\github\c#\Pokedex\obj\Debug\Pokedex.exe
+G:\apps\prog\github\c#\Pokedex\obj\Debug\Pokedex.pdb

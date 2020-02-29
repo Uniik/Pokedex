@@ -67,6 +67,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -83,10 +84,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\add.png" />
+    <None Include="Resources\quit.png" />
     <None Include="Resources\PokemonTitle1.png" />
     <None Include="Resources\background.jpg1.png" />
     <None Include="Resources\add1.png" />
     <Content Include="Resources\background.jpg.png" />
+    <None Include="Resources\Female.png" />
+    <None Include="Resources\Male.png" />
+    <None Include="Resources\background2.png" />
+    <None Include="Resources\backgroundAwake.png" />
+    <None Include="Resources\backgroundSleeping.png" />
     <Content Include="Resources\PokemonTitle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
