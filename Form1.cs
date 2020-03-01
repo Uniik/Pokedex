@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,12 +13,19 @@ namespace Pokedex
 {
     public partial class frame : Form
     {
-        private List<ListViewItem> Selections;
+        public List<ListViewItem> Selections;
+        private Hashtable pokeList;
+        private bool male = true; // le pokémon est un male par défaut
         public frame()
         {
             InitializeComponent();
             Selections = new List<ListViewItem>();
-    }
+            pokeList = new Hashtable();
+            // boutton male séléctionné par défaut
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(175)))), ((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.button1.FlatAppearance.BorderSize = 4;
+        }
+
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -29,10 +37,26 @@ namespace Pokedex
             e.Handled = true;
         }
 
+        // male séléctionné
         private void button1_Click(object sender, EventArgs e)
         {
-
+            male = true;
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(255)))), ((int)(((byte)(105)))), ((int)(((byte)(180)))));
+            this.button2.FlatAppearance.BorderSize = 1;
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(175)))), ((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.button1.FlatAppearance.BorderSize = 4;
         }
+
+        // femelle selectionné
+        private void button2_Click(object sender, EventArgs e)
+        {
+            male = false;
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.button1.FlatAppearance.BorderSize = 1;
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(175)))), ((int)(((byte)(255)))), ((int)(((byte)(105)))), ((int)(((byte)(180)))));
+            this.button2.FlatAppearance.BorderSize = 4;
+        }
+
 
         private void button4_MouseEnter(object sender, EventArgs e)
         {
@@ -86,6 +110,12 @@ namespace Pokedex
                 {
                     errorProvider1.SetError(textBox2, "");
                     errorProvider2.SetError(textBox2, "OK");
+                }
+
+                if (pokeList.ContainsKey(textBox2.Text))
+                {
+                    errorProvider1.SetError(textBox2, "Un autre pokémon porte déja ce numéro");
+                    errorProvider2.SetError(textBox2, "");
                 }
             }
             else
@@ -157,8 +187,10 @@ namespace Pokedex
             }
         }
 
+        // boutton enregistrer cliqué
         private void button4_Click(object sender, EventArgs e)
         {
+            bool validated = true;
             errorProvider1.Clear();
             errorProvider2.Clear();
             textBox1_Leave(textBox1, null);
@@ -170,6 +202,111 @@ namespace Pokedex
                 textBox3_Leave(textBox3, null);
             }
 
+            foreach (Control ctrl in panel2.Controls)
+            {
+                // The child or one of its children has an error.
+                if (errorProvider1.GetError(ctrl) != "")
+                    validated = false;
+            }
+            if (validated)
+            {
+                Pokemon pokemon;
+                if (Selections.Count == 1)
+                {
+                    Console.WriteLine("the test" + Selections[0].ImageIndex);
+                    pokemon = new Pokemon(textBox1.Text, male, comboBox1.SelectedIndex + 1, textBox3.Text, Selections[0].ImageIndex);
+                }
+                else
+                {
+                    pokemon = new Pokemon(textBox1.Text, male, comboBox1.SelectedIndex + 1, textBox3.Text, Selections[0].ImageIndex, Selections[1].ImageIndex);
+                }
+                pokeList.Add(textBox2.Text, pokemon);
+                reloadStats(pokemon);
+                disableErrorsProviders();
+                panel3.Visible = true;
+                cleanAll();
+            }
+
+        }
+
+        private void reloadStats(Pokemon pokemon)
+        {
+            label5.Text = pokemon.Nom;
+            label7.Text = "(" + pokemon.Generation.ToString() + ")";
+            label9.Text = pokemon.Dresseur;
+            if (pokemon.Male)
+            {
+                pictureBox1.BackgroundImage = global::Pokedex.Properties.Resources.Male;
+            }
+            else
+            {
+                pictureBox1.BackgroundImage = global::Pokedex.Properties.Resources.Female;
+
+            }
+            pictureBox2.Image = imageList1.Images[pokemon.Element1Index];
+            if(pokemon.Element2Index > -1)
+            {
+                pictureBox3.Image = imageList1.Images[pokemon.Element2Index];
+            }
+            progressBar1.Value = pokemon.HP1;
+            textBox4.Text = pokemon.HP1.ToString();
+            progressBar2.Value = pokemon.Attack1;
+            textBox5.Text = pokemon.Attack1.ToString();
+            progressBar3.Value = pokemon.Defense1;
+            textBox6.Text = pokemon.Defense1.ToString();
+            progressBar4.Value = pokemon.Speed1;
+            textBox7.Text = pokemon.Speed1.ToString();
+            progressBar5.Value = pokemon.TotalStats1;
+            textBox8.Text = pokemon.TotalStats1.ToString();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            panel3.Visible = false;
+        }
+
+        private void disableErrorsProviders()
+        {
+            foreach (Control ctrl in panel2.Controls)
+            {
+                errorProvider1.SetError(ctrl, "");
+                errorProvider2.SetError(ctrl, "");
+            }
+        }
+
+        private void cleanAll()
+        {
+            textBox1.Text = "NOM DU POKÉMON";
+            textBox2.Text = "NUMÉRO DU POKÉMON";
+            textBox3.Text = "DRESSEUR";
+            comboBox1.SelectedItem = null;
+            comboBox1.Text = "GÉNÉRATION";
+            checkBox1.Checked = false;
+            foreach (ListViewItem item in listView1.Items)
+            {
+                item.Checked = false;
+            }
+
+            button1_Click(null, null);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (pokeList.ContainsKey(textBox9.Text))
+            {
+                reloadStats((Pokemon)pokeList[textBox9.Text]);
+                textBox9.Text = "NUM";
+                panel3.Visible = true;
+            }
+            else
+            {
+                errorProvider1.SetError(button6, "Le numéro entré est introuvable");
+            }
         }
     }
+
+
+
+
+
 }
