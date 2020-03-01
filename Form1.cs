@@ -14,7 +14,7 @@ namespace Pokedex
     public partial class frame : Form
     {
         public List<ListViewItem> Selections;
-        private Hashtable pokeList;
+        public Hashtable pokeList;
         private bool male = true; // le pokémon est un male par défaut
         public frame()
         {
@@ -26,12 +26,13 @@ namespace Pokedex
             this.button1.FlatAppearance.BorderSize = 4;
         }
 
-
+        // ferme la fenetre
         private void button3_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        //empecher la saisie manuelle
         private void comboBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
@@ -57,17 +58,19 @@ namespace Pokedex
             this.button2.FlatAppearance.BorderSize = 4;
         }
 
-
+        // le pikachu se réveille quand la souris passe au dessus du boutton
         private void button4_MouseEnter(object sender, EventArgs e)
         {
             this.BackgroundImage = global::Pokedex.Properties.Resources.backgroundAwake;
         }
 
+        // le pikachu se rendors :c
         private void button4_MouseLeave(object sender, EventArgs e)
         {
             this.BackgroundImage = global::Pokedex.Properties.Resources.backgroundSleeping;
         }
 
+        // permet la saisie du dresseur si le pokémon est capturé
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             if (this.checkBox1.Checked)
@@ -95,6 +98,13 @@ namespace Pokedex
             }
         }
 
+        /// <summary>
+        /// vérifie si le numéro entré est inférieur ou égal à 809
+        /// vérifie aussi si un pokémon de la hashtable no possède
+        /// pas déjà le numéro entré
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBox2_Leave(object sender, EventArgs e)
         {
             int n;
@@ -187,7 +197,13 @@ namespace Pokedex
             }
         }
 
-        // boutton enregistrer cliqué
+        /// <summary>
+        /// valide les information, puis crée l'objet pokémon et le stoque dans la hashtable
+        /// afin de pouvoir le rechercher par la suite.
+        /// ensuite, rammene à la page de statistique du pokémon
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button4_Click(object sender, EventArgs e)
         {
             bool validated = true;
@@ -204,7 +220,6 @@ namespace Pokedex
 
             foreach (Control ctrl in panel2.Controls)
             {
-                // The child or one of its children has an error.
                 if (errorProvider1.GetError(ctrl) != "")
                     validated = false;
             }
@@ -229,6 +244,10 @@ namespace Pokedex
 
         }
 
+        /// <summary>
+        /// rafraichi les stats selon le pokémon recu en parametre
+        /// </summary>
+        /// <param name="pokemon"></param>
         private void reloadStats(Pokemon pokemon)
         {
             label5.Text = pokemon.Nom;
@@ -260,11 +279,15 @@ namespace Pokedex
             textBox8.Text = pokemon.TotalStats1.ToString();
         }
 
+        //retourne à la page de création
         private void button5_Click(object sender, EventArgs e)
         {
             panel3.Visible = false;
         }
 
+        /// <summary>
+        /// efface tout les errorproviders de la fenetre
+        /// </summary>
         private void disableErrorsProviders()
         {
             foreach (Control ctrl in panel2.Controls)
@@ -274,6 +297,7 @@ namespace Pokedex
             }
         }
 
+        //rénitialise tout les champs
         private void cleanAll()
         {
             textBox1.Text = "NOM DU POKÉMON";
@@ -290,6 +314,7 @@ namespace Pokedex
             button1_Click(null, null);
         }
 
+        //recherche le pokémon dans la hashtable
         private void button6_Click(object sender, EventArgs e)
         {
             if (pokeList.ContainsKey(textBox9.Text))

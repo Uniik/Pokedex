@@ -10,19 +10,21 @@ namespace Pokedex
     {
         private string nom;
         private string dresseur; // pas attrapé si null
-        private bool male;
+        private bool male; //femelle si false
         private int generation;
         private int HP;
         private int Attack;
         private int Defense;
         private int Speed;
         private int TotalStats;
-        private int element1Index;
+        private int element1Index;//pour retrouver l'image dans l'imageList
         private int element2Index;
         private string element1;
         private string element2 = null; // seulement un élément si null
 
-        public static readonly string[] elements = {
+
+        //pour obtenir le string de l'élément à partir de l'index de la listView
+        public static readonly string[] elements = { 
             "ACIER","COMBAT","DRAGON","EAU","ÉLECRIK","FÉE",
             "FEU","GLACE","INSECTE","NORMAL","PLANTE","POINSON",
             "PSY","ROCHE","SOL","SPECTRE","TÉNEBRE","VOL"
@@ -50,7 +52,7 @@ namespace Pokedex
             this.dresseur = dresseur;
             this.element1Index = element1;
             this.element2Index = element2;
-            this.element1 = elements[element1];
+            this.element1 = elements[element1]; // pour obtenir le nom de l'élément
             if(element2 > -1)
             {
                 this.element2 = elements[element2];
@@ -83,6 +85,13 @@ namespace Pokedex
             
         }
 
+        /// <summary>
+        /// génère aléatoirement les statistiques du pokémon
+        /// plus il est de haute génération, plus les stats on des chances
+        /// d'etre hautes
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
         private void generateStats(int min, int max)
         {
             Random rand = new Random();
